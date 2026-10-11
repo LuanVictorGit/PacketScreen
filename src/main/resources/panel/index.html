@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>PacketScreen</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<script src="/app.js" defer></script>
+</head>
+<body class="booting">
+<main id="gate" class="gate" hidden>
+  <div class="gate-card">
+    <img class="brand-mark" src="/icon.svg" alt="" width="40" height="40">
+    <h1 class="gate-title">PacketScreen</h1>
+    <p id="gate-message" class="gate-message" role="status" aria-live="polite"></p>
+    <p id="gate-hint" class="gate-hint"></p>
+  </div>
+</main>
+
+<div id="app" class="app" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <img class="brand-mark" src="/icon.svg" alt="" width="28" height="28">
+      <span class="brand-name">PacketScreen</span>
+      <span class="brand-sub" data-text="subtitle"></span>
+    </div>
+    <div class="session">
+      <span id="session-user" class="session-user"></span>
+      <span id="session-time" class="session-time"></span>
+      <button id="logout" class="button ghost" type="button" data-text="logout"></button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="panel upload" aria-labelledby="upload-title">
+      <div class="panel-head">
+        <h2 id="upload-title" data-text="upload-title"></h2>
+        <div class="storage">
+          <span id="storage-label" class="storage-label"></span>
+          <div class="meter" aria-hidden="true"><div id="storage-bar" class="meter-fill"></div></div>
+        </div>
+      </div>
+      <label id="dropzone" class="dropzone" for="file-input">
+        <input id="file-input" type="file" multiple accept="image/png,image/jpeg,image/gif,image/bmp,image/webp,video/mp4,video/webm,video/quicktime,video/x-matroska,video/x-msvideo,.mkv,.flv,.ogg,.ts,.mpg">
+        <span class="dropzone-title" data-text="drop-here"></span>
+        <span id="upload-hint" class="dropzone-hint"></span>
+      </label>
+      <ul id="queue" class="queue" aria-live="polite"></ul>
+    </section>
+
+    <section class="panel library" aria-labelledby="library-title">
+      <div class="panel-head">
+        <h2 id="library-title" data-text="library-title"></h2>
+        <span id="library-count" class="count"></span>
+      </div>
+      <p id="library-empty" class="empty" data-text="library-empty" hidden></p>
+      <ul id="library" class="media-grid"></ul>
+    </section>
+
+    <section id="create" class="panel create" aria-labelledby="create-title" hidden>
+      <div class="panel-head">
+        <h2 id="create-title" data-text="create-title"></h2>
+      </div>
+      <form id="create-form" class="form" novalidate>
+        <label class="field wide">
+          <span data-text="field-name"></span>
+          <input name="name" required maxlength="32" pattern="[A-Za-z0-9_-]{1,32}" autocomplete="off" spellcheck="false">
+        </label>
+        <label class="field wide">
+          <span data-text="field-media"></span>
+          <select name="upload" required></select>
+        </label>
+        <label class="field">
+          <span data-text="field-world"></span>
+          <select name="world" required></select>
+        </label>
+        <label class="field">
+          <span data-text="field-facing"></span>
+          <select name="facing" required></select>
+        </label>
+        <label class="field small">
+          <span>X</span>
+          <input name="x" type="number" step="1" required>
+        </label>
+        <label class="field small">
+          <span>Y</span>
+          <input name="y" type="number" step="1" required>
+        </label>
+        <label class="field small">
+          <span>Z</span>
+          <input name="z" type="number" step="1" required>
+        </label>
+        <label class="field">
+          <span data-text="field-width"></span>
+          <input name="width" type="number" step="0.25" min="0.0625" required>
+        </label>
+        <label class="field">
+          <span data-text="field-height"></span>
+          <input name="height" type="number" step="0.25" min="0.0625" required>
+        </label>
+        <p class="form-note" data-text="create-note"></p>
+        <div class="form-actions">
+          <button class="button primary" type="submit" data-text="create"></button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel screens" aria-labelledby="screens-title">
+      <div class="panel-head">
+        <h2 id="screens-title" data-text="screens-title"></h2>
+        <span id="screens-count" class="count"></span>
+      </div>
+      <p id="screens-empty" class="empty" data-text="screens-empty" hidden></p>
+      <div id="screens" class="screen-list" role="list"></div>
+    </section>
+  </div>
+</div>
+
+<div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+</body>
+</html>

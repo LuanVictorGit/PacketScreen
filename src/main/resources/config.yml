@@ -1,0 +1,191 @@
+# PacketScreen configuration.
+# Every value is validated on load; invalid values fall back to the default and a warning is logged.
+# Values marked (restart) are only applied after a server restart. Everything else is applied by /packetscreen reload.
+
+# Messages file: "en" uses messages.yml, any other code uses messages_<language>.yml (bundled: pt_BR).
+language: en
+
+# Extra console output for troubleshooting.
+debug: false
+
+defaults:
+  # Size in blocks used when /packetscreen create or video is run without width and height.
+  width: 3.0
+  height: 2.0
+  # FIT, FILL or STRETCH.
+  fit-mode: FIT
+  # true: the screen keeps the source aspect ratio inside the requested size. false: free width and height.
+  preserve-aspect: true
+  # Distance in blocks at which players start receiving the screen.
+  view-distance: 48
+  # Playback rate for new video screens.
+  fps: 10
+
+limits:
+  max-screens: 20
+  # Videos that may be playing or paused at the same time (each one runs an FFmpeg process).
+  max-concurrent-videos: 2
+  # Size limits in blocks. Sizes may be fractional, for example 4 x 2.25.
+  min-size: 0.5
+  max-width: 10.0
+  max-height: 10.0
+  max-view-distance: 128
+  max-fps: 20
+  # Upper bound for the processing resolution in pixels (manual or automatic).
+  max-processing-width: 1280
+  max-processing-height: 1280
+  # Cooldown between heavy commands (create, video, url, refresh, resize, scale, aspect, resolution) per sender.
+  command-cooldown-ms: 1000
+  # How far a player may look to choose the block a screen is attached to.
+  max-target-distance: 64
+
+processing:
+  # Worker threads used to decode and convert images and video frames. (restart)
+  threads: 2
+  # Automatic video processing resolution as a fraction of the native map resolution (128 pixels per block).
+  video-resolution-scale: 0.5
+
+image:
+  max-file-size-kb: 10240
+  # Images with larger dimensions are rejected before being decoded.
+  max-source-width: 8192
+  max-source-height: 8192
+  max-source-pixels: 33554432
+  # Animated GIF and WebP play in a loop on image screens. Files with more frames are rejected.
+  max-animation-frames: 1000
+  # Memory for the frames of one animation, already converted to maps. Longer animations skip frames to fit.
+  max-animation-memory-mb: 32
+
+video:
+  # Command name or full path of the FFmpeg executable. Checked before every playback.
+  ffmpeg-path: ffmpeg
+  # Directory for downloaded videos, relative to the plugin folder unless absolute.
+  temp-directory: temp
+  max-file-size-mb: 100
+  max-duration-seconds: 600
+  max-source-width: 1920
+  max-source-height: 1080
+  # Threads FFmpeg may use to decode one video.
+  decoder-threads: 1
+  autoplay-on-create: true
+  # Start every saved video screen when the server starts.
+  autoplay-on-startup: false
+
+cache:
+  # Downloaded images are kept in memory so that resizing and re-rendering do not download them again.
+  enabled: true
+  max-memory-mb: 32
+  expire-minutes: 30
+  # A URL that failed is not requested again for this many seconds.
+  failure-cooldown-seconds: 30
+
+http:
+  connect-timeout-ms: 5000
+  read-timeout-ms: 10000
+  # Hard limit for a whole download, including redirects.
+  total-timeout-ms: 30000
+  max-redirects: 3
+  user-agent: PacketScreen
+
+security:
+  # Allows loopback, private, link-local and other internal addresses. Keep false on public servers.
+  allow-private-addresses: false
+  allowed-ports: [80, 443]
+  # When not empty, only these hosts (and their subdomains) can be used.
+  allowed-hosts: []
+  # These hosts (and their subdomains) are always rejected.
+  blocked-hosts: []
+  max-url-length: 2048
+
+network:
+  # Interval of the packet sender loop.
+  tick-interval-ms: 50
+  # Interval used to decide which players are in range of each screen.
+  tracker-interval-ms: 250
+  # How often player positions are sampled, in server ticks.
+  position-interval-ticks: 5
+  # Map data sent to a single player. Video frames are skipped for that player when the budget is exhausted.
+  max-kilobytes-per-second-per-player: 1024
+  max-packets-per-second-per-player: 600
+  # Map data sent to all players together.
+  max-kilobytes-per-second-total: 8192
+  # true hides the plugin packets from other PacketEvents listeners, which is faster.
+  silent-packets: true
+
+rendering:
+  # AUTO: glow item frames on 1.17+ (full brightness) and item frames on older servers.
+  # ITEM_FRAME: always item frames (the image follows the world lighting). GLOW_ITEM_FRAME: requires 1.17+.
+  frame-type: AUTO
+  # Hides the frame border. Supported by 1.16+ clients, ignored by older clients.
+  invisible-frames: true
+  # true: transparent pixels and empty areas stay transparent. false: they are filled with background-color.
+  transparent-background: true
+  background-color: "#000000"
+  # Fixed wall screens get a solid back, so players behind them see a flat colour instead of seeing through.
+  # Hologram screens never show their back and do not use it.
+  solid-back: true
+  back-color: "#000000"
+  # NONE, ORDERED or FLOYD_STEINBERG.
+  image-dithering: FLOYD_STEINBERG
+  video-dithering: ORDERED
+  # Range of map ids reserved for screens. Keep it above the ids used by real maps. (restart)
+  # Servers older than 1.13 store map ids in 16 bits, so the maximum there is 32767.
+  map-id-min: 24000
+  map-id-max: 32767
+  # Highest virtual entity id. One million ids below it are reserved for screens. (restart)
+  entity-id-start: 2100000000
+
+errors:
+  # What a screen shows when its content fails to load: KEEP_LAST, PLACEHOLDER or HIDE.
+  display: KEEP_LAST
+  placeholder-color: "#400000"
+  # Extra attempts for network failures and their delay.
+  load-retries: 1
+  retry-delay-seconds: 5
+
+web:
+  # Embedded upload panel (requires Java 17+). Administrators open it through a temporary link: /packetscreen web
+  enabled: false
+  # IP or domain written in the links sent to administrators. Empty: server-ip from server.properties, or this machine's address.
+  host: ""
+  # Port the panel listens on. It must be open in the firewall or allocated by the host.
+  port: 8125
+  # Interface to listen on: 0.0.0.0 for every interface, 127.0.0.1 when a reverse proxy runs on the same machine.
+  bind-address: "0.0.0.0"
+  # Full address used in the links instead of host and port, for example https://panel.example.com behind a TLS reverse proxy.
+  public-url: ""
+  # The link is single use and must be opened within this time.
+  token-minutes: 10
+  # How long a panel session lasts after the link is opened.
+  session-minutes: 30
+  # Total disk space for uploaded files (plugins/PacketScreen/uploads).
+  max-storage-mb: 1024
+  login-attempts-per-minute: 10
+  # true: the client address comes from X-Forwarded-For (only behind a reverse proxy you control).
+  trust-proxy: false
+
+# Permission required by each subcommand. packetscreen.admin always grants every subcommand.
+command-permissions:
+  create: packetscreen.create
+  video: packetscreen.video
+  url: packetscreen.create
+  refresh: packetscreen.create
+  resize: packetscreen.resize
+  scale: packetscreen.resize
+  aspect: packetscreen.resize
+  resolution: packetscreen.resize
+  fps: packetscreen.video
+  play: packetscreen.video
+  pause: packetscreen.video
+  stop: packetscreen.video
+  restart: packetscreen.video
+  loop: packetscreen.video
+  move: packetscreen.move
+  rotate: packetscreen.move
+  range: packetscreen.move
+  hologram: packetscreen.move
+  remove: packetscreen.remove
+  list: packetscreen.list
+  info: packetscreen.list
+  reload: packetscreen.reload
+  web: packetscreen.web

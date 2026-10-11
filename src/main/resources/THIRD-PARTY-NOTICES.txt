@@ -1,0 +1,25 @@
+PacketScreen bundles the following third-party libraries. They are relocated under com.packetscreen.lib.
+
+Javalin 7.2.3 - https://javalin.io
+  Apache License 2.0
+
+Eclipse Jetty 12.1 (server, http, io, util, security, session, ee10 servlet) - https://jetty.org
+  Eclipse Public License 2.0 or Apache License 2.0
+
+Jakarta Servlet API 6.0 - https://jakarta.ee
+  Eclipse Public License 2.0 or GPL-2.0 with Classpath Exception
+
+Kotlin Standard Library 2.2 - https://kotlinlang.org
+  Apache License 2.0
+
+JetBrains Java Annotations - https://github.com/JetBrains/java-annotations
+  Apache License 2.0
+
+SLF4J API and JDK14 provider 2.0 - https://www.slf4j.org
+  MIT License
+
+TwelveMonkeys ImageIO 3.15 (webp, core, metadata, common) - https://github.com/haraldk/TwelveMonkeys
+  BSD 3-Clause License
+
+PacketEvents is not bundled; it is installed as a separate plugin (GPL-3.0).
+FFmpeg is not bundled; it is an external program configured in config.yml.

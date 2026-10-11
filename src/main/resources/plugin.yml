@@ -1,0 +1,49 @@
+name: PacketScreen
+version: '${project.version}'
+main: com.packetscreen.PacketScreenPlugin
+api-version: '1.13'
+folia-supported: true
+depend: [packetevents]
+description: Virtual image and video screens rendered exclusively with packets.
+commands:
+  packetscreen:
+    description: Manage virtual image and video screens.
+    usage: /<command> help
+    aliases: [pscreen]
+permissions:
+  packetscreen.admin:
+    description: Full administrative access to PacketScreen.
+    default: op
+    children:
+      packetscreen.create: true
+      packetscreen.remove: true
+      packetscreen.resize: true
+      packetscreen.video: true
+      packetscreen.reload: true
+      packetscreen.list: true
+      packetscreen.move: true
+      packetscreen.web: true
+  packetscreen.create:
+    description: Create image screens and change their source.
+    default: op
+  packetscreen.remove:
+    description: Remove screens.
+    default: op
+  packetscreen.resize:
+    description: Resize screens and change fit, aspect and processing resolution.
+    default: op
+  packetscreen.video:
+    description: Create and control video screens.
+    default: op
+  packetscreen.reload:
+    description: Reload the configuration and messages.
+    default: op
+  packetscreen.list:
+    description: List screens and show their information.
+    default: op
+  packetscreen.move:
+    description: Move and rotate screens and change their view distance.
+    default: op
+  packetscreen.web:
+    description: Generate temporary links to the web upload panel.
+    default: op
